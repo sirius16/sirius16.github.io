@@ -20,11 +20,14 @@
 
     </style>
     <textarea name="checked" id="checked" cols="30" rows="10"></textarea>
+    <input type="button" value="Get Channels" onclick="AutoTools.sendCommand(checked.value)">
     <div id="channelist"></div>
     
     
 <script>
-onchange  = e=> AutoTools.sendcommand(checked.value = [...document.querySelectorAll(":checked")].map(i=>i.nextSibling.textContent).join(","));
+onchange  = e=> checked.value = [...document.querySelectorAll(":checked")].map(i=>i.nextSibling.textContent).join(",");
+    
+    
  
         // checked.insertAdjacentHTML('afterend',)
         // for (let [i,j] of ["asdf #1","asdf #2","asdf #3","asdf #4","asdf #45","asfdgn #1","asfdgn #2","asfdgn #3","asfdgn #4","asfdgn #45","234j #1","234j #2","234j #3","234j #4","234j #45","vbn a #1","vbn a #2","vbn a #3","vbn a #4","vbn a #45"].reduce((i,j)=>i.set(...j.split(/ (?=#)/)),Object.assign(new Map,{set(t,...e){var r;return this.isPlainObjOrArray(t)?[t,r]=[...this,[t,[]]].find(([e])=>this.objKeyEquals(t,e)):r=this.get(t)||[],Map.prototype.set.apply(this,[t,[].concat(r,[...e])])},isPlainObjOrArray:t=>Array.isArray(t)||Object.getPrototypeOf(t)==={}.__proto__,objKeyEquals(t,e){if(Object.getPrototypeOf(t)!==Object.getPrototypeOf(e))return!1;const r=Object.keys(t),s=Object.keys(e);return r.length===s.length&&r.every(r=>this.isPlainObjOrArray(t[r])?this.objKeyEquals(t[r],e[r]):t[r]===e[r])},toArray(){return[...this]}}))]) {(([i,j])=>[i,...j].reduce((i,j)=>i.replace('%s',j),'<li><h2>%s</h2>' + '<label><input type="checkbox">%s</label>'.repeat(j.length) + '</li>')).join("")}
