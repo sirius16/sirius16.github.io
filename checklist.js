@@ -53,7 +53,7 @@ const checkList=new DOMParser().parseFromString('<div id=checkboxes><textarea na
         for (let node of nodes) if (!node.innerText) node.innerText = " ";
     });
     checkBoxesDarkReaderStyleObserver.observe(checkList,{subtree:!0,childList:!0})
-    checklist.onchange = e=> checked.value = [...document.querySelectorAll(":checked")].map(i=>i.nextSibling.textContent).join(",");
+    checkList.addEventListener("change",checkList.onchange = e=> checked.value = [...document.querySelectorAll(":checked")].map(i=>i.nextSibling.textContent).join(","));
     if (onclick) checkList.querySelector('[type=button]').onclick = e=> onclick.call(this,[checkList.firstElementChild.value,e])
     
     for (let node of $x('.//*[contains(name(),"h")]',checkList)) {node.onclick = e=> {if (!e.target.matches("input"))return (e.preventDefault(),!1)};   node.ondblclick = ({target})=>{const [header,...list] = target.closest("ul").querySelectorAll("input[type='checkbox']"); header.checked=!header.checked; for (let checkbox of list) checkbox.checked = header.checked }}
