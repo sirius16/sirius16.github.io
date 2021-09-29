@@ -40,7 +40,7 @@ li {\n\
 const checkList=new DOMParser().parseFromString('<div id=checkboxes><textarea name="checked" id="checked" cols="30" rows="10"></textarea><input type="button" value="Get Checked">' + style + categorize(list.filter(i=>i.some(i=>i)).filter((i,j,k)=>k.findIndex(j=>j.every(j=>i.includes(j)))===j).map(i=>
         // [i.splice(0,levels).map((i,j)=>'<h' + (j+=2) + '><label><input type="checkbox">' + i + '</label></h' + j + '></ul>'),i.map(i=>'<li><label><input type="checkbox">' + i + '</label></li>')]
         [(i=i.map((i,j,k)=>i && k.indexOf(i) == j ? i : '')).splice(0,levels).map((i,j)=>i && '<h' + (j+=2) + '><label><input type="checkbox">' + (i||"") + '</label></h' + j + '>'),i.map(i=>i && '<li><label><input type="checkbox">' + i + '</label></li>')]
-    )) + '</div>',"text/html").body.firstElementChild;
+    ).sort(([i],[j])=>+!i.join("")||-!j.join(""))) + '</div>',"text/html").body.firstElementChild;
 
     for (let node of checkList.parentElement.querySelectorAll('*')) node.dataset.id=$x('(./ancestor-or-self::*[not(.//div[@id="checkboxes"])])',node).reduce((i,j,k)=>i+""+((k+1)%3?".":":")+[...j.parentElement.children].indexOf(j).toString(36),"")
     //.reduce((j,i)=>j.replace(i.outerHTML+(i.matches("label>*,h2 >*,h3 >*,li >*")||""),'\n'+'\t'.repeat(i.dataset.id.match(/[:.]/g).length-1)+i.outerHTML.replace(/(?<=.+)(?=<\/[^<]+$)/g,!i.matches('ul>:not(ul),label') ? '\n'+'\t'.repeat(i.dataset.id.match(/[:.]/g).length-1):'')),checkList.innerHTML)
