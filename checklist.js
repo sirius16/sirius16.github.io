@@ -4,7 +4,62 @@
  * @param {any[][]} list list of arrays 
  * @param {function} onclick button click function
  */
-function checklist(levels, list,onclick) {
+function checklist(levels, list,...args) {
+    /**
+ * Get kwargs object of switches
+ * @param {string[]} switches array of switches to parse
+ * @param {...string} args args to parse into switches
+ * @return {{string: boolean}} kwargs object
+ */
+argSwitches = (switches, ...args) => args.map(i=>switches.filter(j=>j.startsWith(i) || ("-" + j).startsWith(i) || ("--" + j).startsWith(i))).filter(i=>i.length===1).reduce((i,[j])=>({...i,[j]:!0}),Object.fromEntries(switches.map(i=>[i,!1])))
+
+    
+    
+   const z=new DOMParser().parseFromString('<div class="selector-bg">\n\
+    <style>\n\
+        .selector-bg {\n\
+            position: fixed;\n\
+            width: 100%;\n\
+            height: 100%;\n\
+            background-color: #000000;\n\
+            opacity: 0.7;\n\
+            z-index: 1000;\n\
+            top: 0;\n\
+        }\n\
+\n\
+        .selector {\n\
+            position: fixed;\n\
+            top: 0px;\n\
+            bottom: 0px;\n\
+            left: 0px;\n\
+            right: 0px;\n\
+            width: 60%;\n\
+            height: 80%;\n\
+            max-width: 800px;\n\
+            margin: auto;\n\
+            overflow-y: auto;\n\
+            border: 10px solid #eee;\n\
+            box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.2);\n\
+            padding: 15px 20px;\n\
+            /* background-color: #ffffff; */\n\
+            z-index: 1001;\n\
+            /* list-style: none; */\n\
+        }\n\
+    </style>\n\
+</div>\n\
+<div class="selector"></div>','text/html')//.querySelector('.selector');
+    
+   
+   
+for (const i in args) {
+		if (Object.hasOwnProperty.call(args, i)) {
+			const arg = args[i];
+			if (typeof arg === "function") {var onclick = args.splice(i,1)[0]}
+		}
+	}
+    
+   const {background,Bg, append} = argSwitches(["background,","Bg","append"],...args)
+   const bg = background || Bg;
 
 /**
  * @type {string}
@@ -65,6 +120,9 @@ const checkList=new DOMParser().parseFromString('<div id=checkboxes><textarea na
         .map(([i,j])=>[i,'<ul>' + i.pop() + (level === levels ? '<ul>' : '') + (/(?=<\/[^<]+$)/,j.flat().join("")+'</ul>'.repeat(1 + (level === levels)))]),level-1)
         // .map(([i,j])=>[i,i.pop() + (/(?=<\/[^<]+$)/,j.join(""))])
     }
+            if (bg) z.querySelector(".selector").replaceChildren(checkList)
+            if (append) {document.body.append(bg ? ...z.children : checkList)}
+                
     return checkList
                 
 /** 
