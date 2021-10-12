@@ -1,7 +1,7 @@
 /**
- * 
+ *
  * @param {number} levels number of level
- * @param {any[][]} list list of arrays 
+ * @param {any[][]} list list of arrays
  * @param {function} onclick button click function
  */
 function checklist(levels, list,...args) {
@@ -13,8 +13,8 @@ function checklist(levels, list,...args) {
  */
 argSwitches = (switches, ...args) => args.map(i=>switches.filter(j=>j.startsWith(i) || ("-" + j).startsWith(i) || ("--" + j).startsWith(i))).filter(i=>i.length===1).reduce((i,[j])=>({...i,[j]:!0}),Object.fromEntries(switches.map(i=>[i,!1])))
 
-    
-    
+
+
    const z=new DOMParser().parseFromString('<div class="selector-bg">\n\
     <style>\n\
         .selector-bg {\n\
@@ -48,17 +48,17 @@ argSwitches = (switches, ...args) => args.map(i=>switches.filter(j=>j.startsWith
     </style>\n\
 </div>\n\
 <div class="selector"></div>','text/html')//.querySelector('.selector');
-    
-   
-   
+
+
+
 for (const i in args) {
 		if (Object.hasOwnProperty.call(args, i)) {
 			const arg = args[i];
 			if (typeof arg === "function") {var onclick = args.splice(i,1)[0]}
 		}
 	}
-    
-   const {background,Bg, append} = argSwitches(["background,","Bg","append"],...args)
+
+   const {background,Bg, append} = argSwitches(["background","Bg","append"],...args)
    const bg = background || Bg;
 
 /**
@@ -110,7 +110,7 @@ const checkList=new DOMParser().parseFromString('<div id=checkboxes><textarea na
     checkBoxesDarkReaderStyleObserver.observe(checkList,{subtree:!0,childList:!0})
     checkList.addEventListener("change",checkList.onchange = e=> checked.value = [...document.querySelectorAll(":checked")].map(i=>i.nextSibling.textContent).join(","));
     if (onclick) checkList.querySelector('[type=button]').onclick = e=> onclick.call(this,[checkList.firstElementChild.value,e])
-    
+
     for (let node of $x('.//*[contains(name(),"h")]',checkList)) {node.onclick = e=> {if (!e.target.matches("input"))return (e.preventDefault(),!1)};   node.ondblclick = ({target})=>{const [header,...list] = target.closest("ul").querySelectorAll("input[type='checkbox']"); header.checked=!header.checked; for (let checkbox of list) checkbox.checked = header.checked;checkList.dispatchEvent(new Event("change")); }}
 
 
@@ -121,16 +121,16 @@ const checkList=new DOMParser().parseFromString('<div id=checkboxes><textarea na
         // .map(([i,j])=>[i,i.pop() + (/(?=<\/[^<]+$)/,j.join(""))])
     }
             if (bg) z.querySelector(".selector").replaceChildren(checkList)
-            if (append) {document.body.append(bg ? ...z.children : checkList)}
-                
+            if (append) {bg ? document.body.append(...z.children) : document.body.append(checkList)}
+
     return checkList
-                
-/** 
- * @template K,V
- */ 
 
 /**
- * 
+ * @template K,V
+ */
+
+/**
+ *
  * @param {number | string | ()=>K | (number | string | ()=>K)[] | [(number | string | ()=>K)[] | number | string | ()=>K, number | string | ()=>V | (number | string | ()=>V)[]]} a properties to group by
  * @param {1 | 0 | -1} sort sort direction
  * @param {any[]} b list to group
@@ -154,7 +154,7 @@ const checkList=new DOMParser().parseFromString('<div id=checkboxes><textarea na
               var kk;
               if (this.isPlainObjOrArray(k))
                   ([k, kk] = [...this, [k, []]].find(([i]) => this.objKeyEquals(k, i)));
-  
+
               else
                   kk = this.get(k) || [];
               return Map.prototype.set.apply(this, [k, [].concat(kk, [...v])]);
@@ -168,7 +168,7 @@ const checkList=new DOMParser().parseFromString('<div id=checkboxes><textarea na
           isPlainObjOrArray(object) {
               return Array.isArray(object) || Object.getPrototypeOf(object ?? "") === {}.__proto__;
           },
-  
+
           /**
            * Determine if objects are equal
            * @template K
@@ -191,15 +191,15 @@ const checkList=new DOMParser().parseFromString('<div id=checkboxes><textarea na
               return [...this];
           }
       });
-      
+
       function parseCallback(callbacks, ...objects) {
           // var parse = new MathParser()
-      
+
           const nums = ["+","-","num",,"int",,-1,-2]
-              
-              
+
+
           callbacks = [].concat(callbacks)
-      
+
           objects = objects.map(o => {
               for (let i = 0; i < callbacks.length; i++) {
                   // 		if (Object(o) !== o) break;
@@ -209,7 +209,7 @@ const checkList=new DOMParser().parseFromString('<div id=checkboxes><textarea na
                   // (callback && callback != 0 && callback != void 0)
                   if (typeof callback === "boolean") return !o != callback
                   if (o == null) return o
-                  o = 
+                  o =
                       ((Array.isArray(callback) || null) && (((typeof callback == "function" || null) && tryCallback(callback.shift(), o, ...callback)) ?? ((o[callback] == "function" || null) && (tryCallback(o[callback.shift()], ...callback))))) ??
                       ((~(toNum = nums.indexOf(callback)) || null) && o * (toNum &
                           1 ? -1 : 1)) ??
@@ -217,16 +217,16 @@ const checkList=new DOMParser().parseFromString('<div id=checkboxes><textarea na
                           // Object(o) === o && callback in o && notNull((typeof o[callback] == "function" ? notNull(tryCallback(o[callback])) : o[callback])) ||
                           ((typeof callback === "function" || null) && tryCallback(callback, o)) ??
                           ((callbacks[i + 1] && callback == "*" || null) && findObj(o, callback[i + 1]))
-      
+
                   // ).map(aa => aa == void 0 ? "" : aa) : flatten(objects), objects.length == 1 ? objects[0] : objects
-      
-      
+
+
               }
               return o
           })
-          return objects.length > 1 ? objects : objects[0] // objects = 
+          return objects.length > 1 ? objects : objects[0] // objects =
       }
-      
+
       function tryCallback(t, ...e) {
           try {
               // return t.call(this, ...e)
@@ -235,11 +235,11 @@ const checkList=new DOMParser().parseFromString('<div id=checkboxes><textarea na
               return null
           }
       }
-      
+
       function fieldSorter(...fields) {return (x, y) => Array(fields.length - 1).fill().map((i, j) => [fields[j + 1], fields[j + 0]]).map((o, p) => ((Array.isArray(o) && ([o, p] = o)), ([a, b] = parseCallback(o, x, y)), (-(p < 0) || 1) * (+(a > b) || -(a < b)))).reduce((c, d) => c || d, 0)}
-      
+
   function sa1(arr,...functions) {return arr.reduce((i,j,k)=>Object.assign(i,{[k=i.findIndex(([m])=>(typeof m === "boolean" && m) || (m instanceof RegExp && m.exec(j)) || (typeof m !== "function" && j == m) || (typeof m === "function" && m(j)))]:[i[k][0],[].concat(i[k][1],[j])]}),functions.map(i=>[i,[]])).map(([,i])=>i)}
-      
+
       function flatten(...a) {return [...(function* () {
           for (var i = 0, arr = [a], prevarr = []; i < arr.length || prevarr.length; i++)
               if (i == arr.length)[i, arr] = prevarr.pop();
@@ -249,23 +249,23 @@ const checkList=new DOMParser().parseFromString('<div id=checkboxes><textarea na
               arr = arr[i], i = -1
           } else yield arr[i]
       })()]}
-      
-    
-     
+
+
+
           var kv, v,
-  
+
       [
           [sort] = [],
           [kv] = [],
           [a, ...b]
       ] = sa1([a, sort, ...b], a => ~[-1, 1].indexOf(a), /^(?:(?:(?:k|ke|key)(v|va|val|valu|value)?)|(?:(v|va|val|valu|value)(?:k|ke|key)?)?)$/i, true)
-  
+
       // if (kv) var [, value, v] = kv.match(kvRegEx)
-  
-  
+
+
       if (kv?.includes("v") && typeof a !== "function" || Array.isArray(a) && a.length == 2 && a.every(Array.isArray)) var [k, v] = a
       else var k = a
-  
+
       if (b.length == 1 && b.every(i=>Array.isArray(i))) b = [].concat(...b)
       var c = [...b.reduce((i, j) => i.set(...[kv?.includes("v") && typeof a === "function" ? parseCallback(k,j) : [parseCallback(k, j), v ? parseCallback(v,j) : j]].flat()), imap)]
       return sort ? c.sort(fieldSorter(sort, [1,"length"])) : c
@@ -273,7 +273,7 @@ const checkList=new DOMParser().parseFromString('<div id=checkboxes><textarea na
 
 
     /**
-     * 
+     *
      * @param {string} xpath xpath
      * @param {Node} context context node
      * @returns {Node[]} list of nodes
