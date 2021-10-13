@@ -109,6 +109,7 @@ const checkList=new DOMParser().parseFromString('<div id=checkboxes><textarea na
     });
     checkBoxesDarkReaderStyleObserver.observe(checkList,{subtree:!0,childList:!0})
     checkList.addEventListener("change",checkList.onchange = e=> checked.value = [...document.querySelectorAll(":checked")].map(i=>i.nextSibling.textContent).join(","));
+	
     if (onclick) checkList.querySelector('[type=button]').onclick = e=> onclick.call(this,[checkList.firstElementChild.value,e])
 
     for (let node of $x('.//*[contains(name(),"h")]',checkList)) {node.onclick = e=> {if (!e.target.matches("input"))return (e.preventDefault(),!1)};   node.ondblclick = ({target})=>{const [header,...list] = target.closest("ul").querySelectorAll("input[type='checkbox']"); header.checked=!header.checked; for (let checkbox of list) checkbox.checked = header.checked;checkList.dispatchEvent(new Event("change")); }}
@@ -120,7 +121,7 @@ const checkList=new DOMParser().parseFromString('<div id=checkboxes><textarea na
         .map(([i,j])=>[i,'<ul>' + i.pop() + (level === levels ? '<ul>' : '') + (/(?=<\/[^<]+$)/,j.flat().join("")+'</ul>'.repeat(1 + (level === levels)))]),level-1)
         // .map(([i,j])=>[i,i.pop() + (/(?=<\/[^<]+$)/,j.join(""))])
     }
-            if (bg) z.querySelector(".selector").replaceChildren(checkList)
+            if (bg) {z.querySelector(".selector").replaceChildren(checkList);const escClose = {key}=>{if (key==="Escape") {for (let node of z.children) node.remove();removeEventListener("keydown",escClose);return !1;}};addEventListener("keydown",escClose)}
             if (append) {bg ? document.body.append(...z.children) : document.body.append(checkList)}
 
     return checkList
