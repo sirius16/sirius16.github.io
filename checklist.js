@@ -121,7 +121,7 @@ const checkList=new DOMParser().parseFromString('<div id=checkboxes><textarea na
         .map(([i,j])=>[i,'<ul>' + i.pop() + (level === levels ? '<ul>' : '') + (/(?=<\/[^<]+$)/,j.flat().join("")+'</ul>'.repeat(1 + (level === levels)))]),level-1)
         // .map(([i,j])=>[i,i.pop() + (/(?=<\/[^<]+$)/,j.join(""))])
     }
-            if (bg) {z.querySelector(".selector").replaceChildren(checkList);const escClose = {key}=>{if (key==="Escape") {for (let node of z.children) node.remove();removeEventListener("keydown",escClose);return !1;}};addEventListener("keydown",escClose)}
+            if (bg) {z.querySelector(".selector").replaceChildren(checkList);const escClose = ({key})=>{if (key==="Escape") {for (let node of z.children) node.remove();removeEventListener("keydown",escClose);return !1;}};addEventListener("keydown",escClose)}
             if (append) {bg ? document.body.append(...z.children) : document.body.append(checkList)}
 
     return checkList
